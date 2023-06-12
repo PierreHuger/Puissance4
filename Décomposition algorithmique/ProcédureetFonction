@@ -1,0 +1,141 @@
+type Puissance4 :tableau[1..nbLigne, 1..nbColonne] de entier;
+type ligneDeplacement :tableau[6] de entier;
+
+Procédure tourJ :
+Permet d'alterner les tours pour faire jouer une fois le joueur 1 puis une fois le joueur 2 jusqu'à ce que la partie soit terminée (gagné ou égalité)
+
+Paramètres :
+i : sortie //permet de determiner le vainqueur en fin de partie
+
+Procédure deplacement :
+Demande aux joueurs de rentrer un caractère pour se déplacer (q/d) ou pour faire tomber le jeton (s). La procédure s'arrête quand le caractère "s" est rentré. Le caractère se déplacera dans un tableau à 1 ligne et a 7 cases. Ce tableau sera placé au-dessus du tableau Puissance4. Cette procédure veille à ne pas dépasser les limites du tableau à droite et à gauche.
+
+Paramètre :
+ligneDeplacement tableau[]: entrée
+dep : entrée/sortie caractère
+
+Procédure caseVide :
+Vérifie si la case est vide. Si elle est vide alors le jeton est "ajouté" à cette case sinon le programme remonte d'une case et vérifie de nouveau
+Cette procédure veille également à ne pas dépasser la limite de hauteur du tableau.
+
+Paramètre :
+Puissance4 tableau[]: entrée/sortie
+
+Fonction égalité :
+La fonction égalité vérifie si le tableau est rempli entièrement. S'il est rempli et que la procédure victoire ne détecte pas de vainqueur alors la fonction égalité affiche égalité.
+Ici, la fonction retourne un booléen. Vrai si le tableau est plein, sinon elle retourne faux
+
+Paramètre :
+Puissance4 tableau[]: entrée
+
+Fonction victoireLigne :
+Vérifie les jetons en ligne. Cette fonction renvoie un booléen. La fonction renvoie Vrai si 4 jetons sont alignés en ligne et la fonction renvoie faux sinon.
+
+Paramètre :
+Puissance4 tableau[]: entrée
+
+Fonction victoireColonne :
+Vérifie les jetons en colonne. Cette fonction renvoie un booléen. La fonction renvoie Vrai si 4 jetons sont alignés en colonne et la fonction renvoie faux sinon.
+
+Paramètre :
+Puissance4 tableau[]: entrée
+
+Fonction victoireDiagonaleDroite :
+Vérifie les jetons sur une diagonale droite. Cette fonction renvoie un booléen. La fonction renvoie Vrai si 4 jetons sont alignés sur une diagonale droite et la fonction renvoie faux sinon.
+
+Paramètre :
+Puissance4 tableau[]: entrée
+
+Fonction victoireDiagonaleGauche :
+Vérifie les jetons sur la diagonale gauche. Cette fonction renvoie un booléen. La fonction renvoie Vrai si 4 jetons sont alignés sur une diagonale gauche et la fonction renvoie faux sinon.
+
+Paramètre :
+Puissance4 tableau[]: entrée
+
+Procédure victoire :
+Permet de réunir toutes les fonctions de victoire (victoireDiagonaleGauche, victoireDiagonaleDroite, victoireColonne, victoireLigne)
+
+Paramètre :
+Pas de paramètre
+
+Procédure afficheTableau :
+Cette procédure affiche le tableau à chaque tour. Au premier tour, elle affichera le tableau vide avec le caractère '_' qui sera remplacé au fur et a mesure par les jetons. Cette procédure affichera également :   Joueur 1 : X
+                                                                    Joueur 2 : O
+Paramètre :
+Puissance4 tableau[]: entrée/sortie
+
+
+programme puissance4 cest 
+
+constante caractère DROITE:= 'd';
+constante caractère GAUCHE:= 'q';
+constante caractère TOMBE:= 's';
+constante entier nbColonne:= 7;
+constante entier nbLigne:= 6;
+
+type Puissance4 :tableau[1..nbLigne, 1..nbColonne] de entier;
+
+debut 
+
+    //Definition des variables
+    joueur: entier;
+    dep: caractère;
+    nul, gagne: booléen;
+    
+    //fonctions de victoire et d'égalité définie dans des variables pour les vérifier ensuite dans la boucle tant que
+    nul:= égalité(entE Puissance4);
+    gagne:=victoire();
+
+    //affichage des règles et des explications pour pouvoir jouer
+    écrireEcran("Le Puissance 4 est un jeu qui se joue à 2 joueurs chacun son tour.\nLe but du jeu est d’aligner quatre de vos jetons (X / O).\nLes jetons peuvent être alignés en ligne, en colonne et aussi en diagonale.\nLe premier qui aligne 4 jetons gagne la partie !\n\n");     
+    
+    écrireEcran("Pour jouer, vous devez utiliser les touches Q (gauche) ou D (droite) pour vous déplacer de colonne en colonne.\nUne fois la colonne choisie, vous utiliserez la touche S pour faire tomber votre jeton.\n");
+
+    //premier tour de jeu pour ensuite rentrer dans la boucle
+    tourJ(sortE joueur); //la procédure afficheTableau est contenu dans la procédure tourJ, le tableau s'affiche donc avec cette procédure
+    répéter
+    {
+        deplacement();
+    }
+    jusqu'à (dep=='s')
+
+    caseVide(entE/sortE Puissance4);
+
+    victoire();//toutes les fonctions de victoire sont contenues dans cette procédure
+
+    égalité(Puissance4);
+    
+    //la boucle est active tant qu'il n'y a pas de vainqueur/égalité
+    tant que ((nul==FAUX) OU (gagne==FAUX)
+    {     
+        tourJ(sortE joueur);
+        répéter
+        {
+            deplacement();
+        }
+        jusqu'à (dep=='s')
+
+        caseVide(entE/sortE Puissance4);
+        
+        victoire(); //toutes les fonctions de victoire sont contenues dans cette procédure
+
+        égalité(entE Puissance4);
+    }
+
+    si ((nul==VRAI) && (gagne==FAUX)) alors
+    {
+        écrireEcran("Egalité");
+    }
+    sinon //((nul==FAUX)&&(gagne==VRAI))
+    {
+        si(joueur==1)
+        {
+            écrireEcran("Vainqueur: Joueur 2\n");
+        }
+        sinonsi (joueur==0)
+        {
+            écrireEcran("Vainqueur: Joueur 1\n");
+        }
+    }
+    finsi
+fin 
